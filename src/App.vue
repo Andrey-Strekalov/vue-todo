@@ -46,6 +46,7 @@ export default {
           completed: false,
         },
       ],
+      text: ""
     };
   },
   methods: {
