@@ -8,16 +8,22 @@
             class="new-todo"
             placeholder="What needs to be done?"
             value=""
+            v-model="text"
+            @keyup.enter="addNewTask()"
           />
         </header>
         <section class="main">
           <input class="toggle-all" type="checkbox" />
           <label for="toggle-all"></label>
           <ul class="todo-list">
-            <li v-for="task in tasks" :key = "task.id">
+            <li v-for="task in tasks" :key="task.id">
               <div class="view">
-                <input type="checkbox" class="toggle" v-model="task.completed">
-                <label>{{task.text}}</label>
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  v-model="task.completed"
+                />
+                <label>{{ task.text }}</label>
                 <button class="destroy"></button>
               </div>
             </li>
@@ -41,6 +47,23 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    getID() {
+      let taskIds = this.tasks.map((item) => item.id);
+      let id = Math.max.apply(null, taskIds) + 1;
+      return id;
+    },
+    addNewTask() {
+      if (this.text) {
+        this.tasks.push({
+          id: this.getID(),
+          text: this.text,
+          completed: false,
+        });
+      }
+      this.text = "";
+    },
   },
 };
 </script>
