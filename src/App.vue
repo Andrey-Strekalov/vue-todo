@@ -24,7 +24,7 @@
                   v-model="task.completed"
                 />
                 <label>{{ task.text }}</label>
-                <button class="destroy"></button>
+                <button class="destroy" @click="deleteTask(task.id)"></button>
               </div>
             </li>
           </ul>
@@ -46,13 +46,13 @@ export default {
           completed: false,
         },
       ],
-      text: ""
+      text: "",
     };
   },
   methods: {
     getID() {
-      let taskIds = this.tasks.map((item) => item.id);
-      let id = Math.max.apply(null, taskIds) + 1;
+      const taskIds = this.tasks.map((item) => item.id);
+      const id = Math.max.apply(null, taskIds) + 1;
       return id;
     },
     addNewTask() {
@@ -64,6 +64,11 @@ export default {
         });
       }
       this.text = "";
+    },
+    deleteTask(id) {
+      const newTasks = this.tasks.filter((item) => item.id !== id);
+      this.tasks = newTasks
+      return this.tasks
     },
   },
 };
