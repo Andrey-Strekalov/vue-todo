@@ -65,7 +65,7 @@ export default {
       }
       this.text = "";
     },
-    deleteTask(id) {
+     deleteTask(id) {
       const newTasks = this.tasks.filter((item) => item.id !== id);
       this.tasks = newTasks
       return this.tasks
