@@ -22,6 +22,7 @@
                   type="checkbox"
                   class="toggle"
                   v-model="task.completed"
+                  @click="toggleStatusTask(task.id)"
                 />
                 <label>{{ task.text }}</label>
                 <button class="destroy" @click="deleteTask(task.id)"></button>
@@ -67,8 +68,13 @@ export default {
     },
     deleteTask(id) {
       const newTasks = this.tasks.filter((item) => item.id !== id);
-      this.tasks = newTasks
-      return this.tasks
+      this.tasks = newTasks;
+    },
+    toggleStatusTask(id) {
+      let newTasksList = this.tasks.map((item) =>
+        item.id !== id ? item : { ...item, completed: !item.competed }
+      );
+      this.tasks = newTasksList;
     },
   },
 };
