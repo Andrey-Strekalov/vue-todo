@@ -16,7 +16,11 @@
           <input class="toggle-all" type="checkbox" />
           <label for="toggle-all"></label>
           <ul class="todo-list">
-            <li v-for="task in tasks" :key="task.id">
+            <li
+              v-for="task in tasks"
+              :key="task.id"
+              :class="{ editing: editedTask.id === task.id }"
+            >
               <div class="view">
                 <input
                   type="checkbox"
@@ -24,9 +28,16 @@
                   v-model="task.completed"
                   @click="toggleStatusTask(task.id)"
                 />
-                <label>{{ task.text }}</label>
+                <label @dblclick="setEditTask(task)">{{ task.text }}</label>
                 <button class="destroy" @click="deleteTask(task.id)"></button>
               </div>
+              <input
+                type="text"
+                class="edit"
+                v-model="editedTask.text"
+                @keyup.enter="editTask(task.id)"
+                @blur="editTask(task.id)"
+              />
             </li>
           </ul>
         </section>
@@ -48,6 +59,7 @@ export default {
         },
       ],
       text: "",
+      editedTask: {},
     };
   },
   methods: {
@@ -75,6 +87,25 @@ export default {
         item.id !== id ? item : { ...item, completed: !item.competed }
       );
       this.tasks = newTasksList;
+    },
+    editTask(id) {
+      if (this.editedTask.text) {
+         this.tasks.forEach((item) => {
+        if (item.id === id) {
+          item = {
+            id: id,
+            text: this.editedTask.text,
+            completed: this.editedTask.completed,
+          };
+        }
+      });
+      } else {
+        this.deleteTask(this.editedTask.id)
+      }
+      this.editedTask = "";
+    },
+    setEditTask(task) {
+      this.editedTask = task;
     },
   },
 };
