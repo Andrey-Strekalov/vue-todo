@@ -89,18 +89,18 @@ export default {
       this.tasks = newTasksList;
     },
     editTask(id) {
-      if (this.editedTask.text) {
-         this.tasks.forEach((item) => {
-        if (item.id === id) {
-          item = {
-            id: id,
-            text: this.editedTask.text,
-            completed: this.editedTask.completed,
-          };
-        }
-      });
+      const editedText = this.editedTask.text;
+      if (editedText) {
+        this.tasks.forEach((item) => {
+          if (item.id === id) {
+            item = {
+              ...item,
+              text: editedText,
+            };
+          }
+        });
       } else {
-        this.deleteTask(this.editedTask.id)
+        this.deleteTask(this.editedTask.id);
       }
       this.editedTask = "";
     },
