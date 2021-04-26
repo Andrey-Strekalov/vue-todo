@@ -42,20 +42,22 @@
           </ul>
         </section>
         <footer class="footer" style="display: block;">
-				<span class="todo-count"><strong>{{activeTasks}}</strong> item left</span>
-				<ul class="filters">
-					<li>
-						<a href="#/" class="selected">All</a>
-					</li>
-					<li>
-						<a href="#/active">Active</a>
-					</li>
-					<li>
-						<a href="#/completed">Completed</a>
-					</li>
-				</ul>
-				<button class="clear-completed" style="display: none;"></button>
-			</footer>
+          <span class="todo-count"
+            ><strong>{{ activeTasks }}</strong> item left</span
+          >
+          <ul class="filters">
+            <li>
+              <a href="#/" class="selected">All</a>
+            </li>
+            <li>
+              <a href="#/active">Active</a>
+            </li>
+            <li>
+              <a href="#/completed">Completed</a>
+            </li>
+          </ul>
+          <button class="clear-completed" @click="clearCompletedTasks()">clear completed</button>
+        </footer>
       </div>
     </section>
   </div>
@@ -122,13 +124,17 @@ export default {
     setEditTask(task) {
       this.editedTask = task;
     },
+    clearCompletedTasks() {
+      const newTasks = this.tasks.filter((task) => !task.completed);
+      this.tasks = newTasks;
+    },
   },
   computed: {
     activeTasks: function() {
-    let term = this.tasks.filter((task) => !task.completed).length;
-    return term;
-    }
-  }
+      let term = this.tasks.filter((task) => !task.completed).length;
+      return term;
+    },
+  },
 };
 </script>
 
