@@ -56,7 +56,13 @@
               <a href="#/completed">Completed</a>
             </li>
           </ul>
-          <button class="clear-completed" @click="clearCompletedTasks()">clear completed</button>
+          <button
+            class="clear-completed"
+            @click="clearCompletedTasks()"
+            v-if="clearCompletedDisplay"
+          >
+            clear completed
+          </button>
         </footer>
       </div>
     </section>
@@ -133,6 +139,9 @@ export default {
     activeTasks: function() {
       let term = this.tasks.filter((task) => !task.completed).length;
       return term;
+    },
+    clearCompletedDisplay: function() {
+      return this.tasks.filter((task) => task.completed).length;
     },
   },
 };
