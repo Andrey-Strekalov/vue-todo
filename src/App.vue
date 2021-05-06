@@ -17,7 +17,7 @@
           <label for="toggle-all"></label>
           <ul class="todo-list">
             <li
-              v-for="task in tasks"
+              v-for="task in filteredTasks"
               :key="task.id"
               :class="{ editing: editedTask.id === task.id }"
             >
@@ -43,17 +43,17 @@
         </section>
         <footer class="footer" style="display: block;">
           <span class="todo-count"
-            ><strong>{{ activeTasks }}</strong> item left</span
+            ><strong>{{ numberActiveTasks }}</strong> item left</span
           >
           <ul class="filters">
             <li>
-              <a href="#/" class="selected">All</a>
+              <router-link to="/all" :class="{selected: pageUrl === '/all'}">All</router-link>
             </li>
             <li>
-              <a href="#/active">Active</a>
+              <router-link to="/active" :class="{selected: pageUrl === '/active'}">Active</router-link >                     
             </li>
             <li>
-              <a href="#/completed">Completed</a>
+              <router-link to="/completed" :class="{selected: pageUrl === '/completed'}">Completed</router-link >                     
             </li>
           </ul>
           <button
@@ -136,12 +136,29 @@ export default {
     },
   },
   computed: {
-    activeTasks: function() {
-      let term = this.tasks.filter((task) => !task.completed).length;
-      return term;
+    pageUrl() {
+      return this.$route.path;
+    },
+    numberActiveTasks() {
+      return this.tasks.filter((task) => !task.completed).length;
     },
     clearCompletedDisplay: function() {
       return this.tasks.filter((task) => task.completed).length;
+    },
+    getActiveTasks() {
+      return this.tasks.filter((task) => !task.completed);
+    },
+    getCompletedTasks() {
+      return this.tasks.filter((task) => task.completed);
+    },
+    filteredTasks() {
+      if (this.pageUrl === "/active") {        
+        return this.getActiveTasks;
+      }
+      if (this.pageUrl === "/completed") {
+        return this.getCompletedTasks;
+      }
+      return this.tasks
     },
   },
 };
@@ -458,7 +475,7 @@ body {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
+.filters li a.selected{
   border-color: rgba(175, 47, 47, 0.2);
 }
 
